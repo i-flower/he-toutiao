@@ -3,7 +3,7 @@ import Vue from 'vue'
 import App from './App.vue'
 
 // 导入路由
-import router from './router/index.js'
+// import router from './router/index.js'
 // 1.如果 router/index.js 可以省略router 默认访问index.js文件
 // 2. ./ ../ 去找到对应的目录并不是很准确  使用vue-cli提供的@（相当于src路径）
 import router from '@/router'

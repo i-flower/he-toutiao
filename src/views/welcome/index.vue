@@ -1,0 +1,22 @@
+<template>
+  <div class="container-welcome"></div>
+</template>
+
+<script type="text/javascript">
+export default {
+  data() {
+    name: 'app-welcome'
+  },
+  components: {
+
+  }
+}
+</script>
+
+<style scoped lang="less" >
+  .container-welcome {
+      width: 100%;
+      height: 100%;
+      background: url(../../assets/welcome.jpg) no-repeat center;
+  }
+</style>

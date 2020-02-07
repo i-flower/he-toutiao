@@ -8,11 +8,17 @@ import App from './App.vue'
 // 2. ./ ../ 去找到对应的目录并不是很准确  使用vue-cli提供的@（相当于src路径）
 import router from '@/router'
 
-// 导入
+// 导入element-ui
 import ElementUI from 'element-ui';
 import 'element-ui/lib/theme-chalk/index.css';
+
+// 导入axios
+import axios from 'axios'
+
 // 使用饿了么ui
 Vue.use(ElementUI);
+//  使用axios
+Vue.prototype.$http = axios
 
 // 配置vue框架的日志级别 productTip
 // false 不是生产环境级别日志，开发环境日志，日志详细

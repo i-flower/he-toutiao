@@ -23,6 +23,7 @@
 
        </el-card>
     </div>
+    
 </template>
 
 <script>
@@ -30,6 +31,7 @@ export default {
     name: 'app-login',
     data() {
         const checkMobile = (rule, value, callback) => {
+            // 使用正则进行手机号自定义校验
             if(!/^1[3-9]\d{9}$/.test(value)) {
                callback(new Error('手机号格式不正确'))
             } else{
@@ -54,12 +56,28 @@ export default {
             ]
             }
         }
+    
     },
     methods: {
         login() {
            this.$refs.loginForm.validate((valid)=> {
                if(valid) {
-                   //进行登录
+                 //校验正确   调用登录接口进行登录
+                 this.$http.post(
+                     'http://ttapi.research.itcast.cn/mp/v1_0/authorizations',
+                     // 请求对像
+                     this.loginForm
+                     ).then(res => {
+                         //登陆成功 获取到响应对象res，res.data是响应主体（将来使用）
+                         // 进行页面跳转
+                         this.$router.push('/')
+                    }).catch(e => {
+                        // 登陆失败 e是错误对象
+                        // 提示：手机号或验证码错误
+                        // console.log(e);
+                        
+                        this.$message.error('手机号或验证码错误')
+                    })
                }
            })
         }
@@ -76,6 +94,7 @@ export default {
         top: 0;
         background:url(../../assets/login_bg.jpg) no-repeat center;
         background-size: cover;
+
         .my-card{
             width:400px;
             height:350px;

@@ -57,7 +57,7 @@
         <!-- 下拉菜单 -->
         <el-dropdown class="my-dropdown" :hide-on-click="false">
           <span class="el-dropdown-link">
-            <img class="user-icon" src="../../assets/avatar.jpg" alt="">
+            <img class="user-icon" src="../../assets/tx.jpeg" alt="">
             <span class="user-name">is-LittleFlower</span>
             <i class="el-icon-arrow-down el-icon--right"></i>
           </span>

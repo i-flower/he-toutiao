@@ -55,7 +55,7 @@
         <span @click="toggleMenu()" class="el-icon-s-fold icon"></span>
         <span>江苏传智播客教育科技有限公司</span>
         <!-- 下拉菜单 -->
-        <el-dropdown class="my-dropdown" :hide-on-click="false">
+        <el-dropdown @command="handler" class="my-dropdown" :hide-on-click="false">
           <span class="el-dropdown-link">
             <img class="user-icon" :src="photo" alt="">
             <span class="user-name">{{name}}</span>
@@ -63,8 +63,8 @@
           </span>
           <el-dropdown-menu slot="dropdown">
               <!-- icon是添加的字体图标 -->
-            <el-dropdown-item icon="el-icon-setting">个人设置</el-dropdown-item>
-            <el-dropdown-item icon="el-icon-unlock">退出登录</el-dropdown-item> 
+            <el-dropdown-item command="setting" icon="el-icon-setting">个人设置</el-dropdown-item>
+            <el-dropdown-item command="logout" icon="el-icon-unlock">退出登录</el-dropdown-item> 
           </el-dropdown-menu>
         </el-dropdown>
       </el-header>
@@ -97,6 +97,14 @@ export default {
     toggleMenu () {
       //切换状态 展开 收起   宽度/logo/导航菜单组件
       this.isOpen = !this.isOpen
+    },
+    handler (command) {
+       if(command === 'setting') {
+         this.$router.push('/setting')
+       }
+       if(command === 'logout') {
+         this.$router.push('/login')
+       }
     }
   }
 };

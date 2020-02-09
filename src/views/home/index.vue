@@ -57,8 +57,8 @@
         <!-- 下拉菜单 -->
         <el-dropdown class="my-dropdown" :hide-on-click="false">
           <span class="el-dropdown-link">
-            <img class="user-icon" src="../../assets/tx.jpeg" alt="">
-            <span class="user-name">is-LittleFlower</span>
+            <img class="user-icon" :src="photo" alt="">
+            <span class="user-name">{{name}}</span>
             <i class="el-icon-arrow-down el-icon--right"></i>
           </span>
           <el-dropdown-menu slot="dropdown">
@@ -82,8 +82,15 @@ export default {
   name: 'app-home',
   data () {
     return {
-      isOpen: true
+      isOpen: true,
+      name: '',
+      photo: ''
     }
+  },
+  created () {
+    const user = auth.getUser()
+    this.name = user.name
+    this.photo = user.photo
   },
   methods: {
     // 切换左菜单

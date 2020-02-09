@@ -77,6 +77,7 @@
 </template>
 
 <script>
+import auth from '@/utils/auth'
 export default {
   name: 'app-home',
   data () {

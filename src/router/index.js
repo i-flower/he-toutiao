@@ -13,6 +13,8 @@ import Home from '@/views/home'
 import Welcome from '@/views/welcome'
 // 导入404页面组件
 import NotFount from '@/views/404'
+// 导入auth模块
+import auth from '@/utils/auth'
 
 // 初始化router 
 const router = new VueRouter({
@@ -29,6 +31,13 @@ const router = new VueRouter({
         // 注意：该路由规则应该写在所有规则的下面。
         { path: '*', component: NotFount}
     ]
+})
+// 前置导航守卫
+router.beforeEach((to, from, next) => {
+   // 如果你不是登录页面，而且比没有token，拦截到登录页面
+   if(to.path !== '/login' && !auth.getUser().token) return next('/login')
+   // 其他情况放行
+   next()
 })
 // 导出 router实例
 export default router

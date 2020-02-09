@@ -4,12 +4,7 @@
 
 <script type="text/javascript">
 export default {
-  data() {
     name: 'app-welcome'
-  },
-  components: {
-
-  }
 }
 </script>
 

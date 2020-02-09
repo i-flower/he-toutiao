@@ -27,6 +27,7 @@
 </template>
 
 <script>
+import auth from '@/utils/auth'
 export default {
     name: 'app-login',
     data() {
@@ -69,7 +70,12 @@ export default {
                      this.loginForm
                      ).then(res => {
                          //登陆成功 获取到响应对象res，res.data是响应主体（将来使用）
+                         // 存储用户信息
+                         // res.data.data就是用户信息
+                         auth.setUser(res.data.data)
                          // 进行页面跳转
+                         console.log(res);
+                         
                          this.$router.push('/')
                     }).catch(e => {
                         // 登陆失败 e是错误对象

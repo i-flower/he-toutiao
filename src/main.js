@@ -13,7 +13,8 @@ import ElementUI from 'element-ui';
 import 'element-ui/lib/theme-chalk/index.css';
 
 // 导入axios
-import axios from 'axios'
+// import axios from 'axios'
+import axios from '@/api'
 
 // 使用饿了么ui
 Vue.use(ElementUI);

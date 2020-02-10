@@ -10,7 +10,7 @@
         <!-- text-color="#fff" 菜单容器文本颜色 -->
         <!-- active-text-color="#ffd04b" 菜单容器被激活文本颜色 -->
         <el-menu
-           default-active="$router.path"
+           default-active="$route.path"
            background-color="#002033"
            text-color="#fff"
            active-text-color="#ffd04b"

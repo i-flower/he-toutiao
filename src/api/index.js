@@ -16,8 +16,10 @@ axios.defaults.baseURL ='http://ttapi.research.itcast.cn/mp/v1_0/'
 axios.interceptors.request.use(config => {
     // 获取到用户信息
     const user = auth.getUser()
+    // console.log(user);
+    
     // 每次请求后台的时候，如果有token，需要给请求头携带token 
-    if (user.token) config.headers.Authorization ='Bearer ${user.token}'
+    if (user.token) config.headers.Authorization =`Bearer ${user.token}`
     // config表示配置，返回配置好的config在发请求的时候使用
     return config
 },error => {

@@ -6,7 +6,15 @@
 
 <script type="text/javascript">
 export default {
-    name: 'app-article'
+    name: 'app-article',
+    created () {
+      this.$http.get('articles').then(res => {
+        console.log(res.data);
+      }).catch(err => {
+        console.log(err);
+        
+      })
+    }
 }
 </script>
 

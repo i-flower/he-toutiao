@@ -61,29 +61,42 @@ export default {
     },
     methods: {
         login() {
-           this.$refs.loginForm.validate((valid)=> {
+           this.$refs.loginForm.validate(async (valid)=> {
                if(valid) {
                  //校验正确   调用登录接口进行登录
-                 this.$http.post(
-                     'http://ttapi.research.itcast.cn/mp/v1_0/authorizations',
-                     // 请求对像
-                     this.loginForm
-                     ).then(res => {
-                         //登陆成功 获取到响应对象res，res.data是响应主体（将来使用）
-                         // 存储用户信息
-                         // res.data.data就是用户信息
-                         auth.setUser(res.data.data)
-                         // 进行页面跳转
-                        //  console.log(res);
+                //  this.$http.post(
+                //      'http://ttapi.research.itcast.cn/mp/v1_0/authorizations',
+                //      // 请求对像
+                //      this.loginForm
+                //      ).then(res => {
+                //          //登陆成功 获取到响应对象res，res.data是响应主体（将来使用）
+                //          // 存储用户信息
+                //          // res.data.data就是用户信息
+                //          auth.setUser(res.data.data)
+                //          // 进行页面跳转
+                //         //  console.log(res);
                          
-                         this.$router.push('/')
-                    }).catch(e => {
-                        // 登陆失败 e是错误对象
-                        // 提示：手机号或验证码错误
-                        // console.log(e);
+                //          this.$router.push('/')
+                //     }).catch(e => {
+                //         // 登陆失败 e是错误对象
+                //         // 提示：手机号或验证码错误
+                //         // console.log(e);
                         
-                        this.$message.error('手机号或验证码错误')
-                    })
+                //         this.$message.error('手机号或验证码错误')
+                //     })
+
+                //使用async与await 修改登录为同步写法
+                try {
+                    const res = await this.$http.post('authorizations', this.loginForm)
+                    auth.setUser(res.data.data)
+                    // console.log(res.data.data);
+                    
+                    this.$router.push('/')
+                } catch (e) {
+                    // console.log(e);
+                    
+                    this.$massage.error('手机号或者验证码错误')
+                }
                }
            })
         }

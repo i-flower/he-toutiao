@@ -15,6 +15,8 @@ import Welcome from '@/views/welcome'
 import NotFount from '@/views/404'
 // 导入auth模块
 import auth from '@/utils/auth'
+// 导入article模块
+import Article from '@/views/article' 
 
 // 初始化router 
 const router = new VueRouter({
@@ -25,8 +27,10 @@ const router = new VueRouter({
         { path: '/', component: Home ,children:[
             // 欢迎页面
             { path: '/', component: Welcome},
+            { path:'/article', component: Article}
 
         ]},
+        
         // 404页面  通配以上规则没有的地址
         // 注意：该路由规则应该写在所有规则的下面。
         { path: '*', component: NotFount}

@@ -74,7 +74,7 @@ export default {
                          // res.data.data就是用户信息
                          auth.setUser(res.data.data)
                          // 进行页面跳转
-                         console.log(res);
+                        //  console.log(res);
                          
                          this.$router.push('/')
                     }).catch(e => {

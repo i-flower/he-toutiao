@@ -22,9 +22,9 @@
           <el-select v-model="filterData.channel_id" placeholder="请选择">
             <el-option
               v-for="item in channelOptions"
-              :key="item.value"
-              :label="item.label"
-              :value="item.value"
+              :key="item.id"
+              :label="item.name"
+              :value="item.id"
             ></el-option>
           </el-select>
         </el-form-item>
@@ -38,11 +38,22 @@
           ></el-date-picker>
         </el-form-item>
         <el-form-item>
-           <el-button type="primary">筛选</el-button>
+          <el-button type="primary">筛选</el-button>
         </el-form-item>
       </el-form>
     </el-card>
-   
+    <!-- 筛选结果区域 -->
+    <el-card style="margin-top: 20px">
+      <div slot="header">根据筛选条件共查询到 0 条结果</div>
+      <!-- 使用表格 -->
+      <el-table :data="articles">
+        <el-table-column label="封面"></el-table-column>
+        <el-table-column label="标题" prop="title"></el-table-column>
+        <el-table-column label="状态"></el-table-column>
+        <el-table-column label="发布时间" prop="pubdate"></el-table-column>
+        <el-table-column label="操作"></el-table-column>
+      </el-table>
+    </el-card>
   </div>
 </template>
 
@@ -52,22 +63,46 @@ export default {
   name: "app-article",
   data() {
     return {
+      articles: [],
+      // 声明筛选条件数据，筛选条件数据提交给后台，数据的字段名称，由后台接口决定。
+      // 筛选数据是由多个表单元素组成，需要收集所有数据，应该使用对象来进行绑定
       filterData: {
-         // 当字段的值null，axios请求不会提交，代表不传
+        // 当字段的值null，axios请求不会提交，代表不传
         status: null,
         channel_id: null,
         begin_pubdate: null,
         end_pubdate: null
       },
-       // 频道下拉选项数据
-      channelOptions: [
-        { label: "前端", value: "1" },
-        { label: "Java", value: "2" }
-      ],
+      // 频道下拉选项数据
+      channelOptions: [],
       // 日期范围数据 [起始日期,结束日期]
       // 但是选择完成日期范围后，可以根据这个数据给 begin_pubdate end_pubdate 赋值。
       dateArr: []
     };
+  },
+  created() {
+    this.getChannelOptions(),
+    this.getArticles()
+  },
+  methods: {
+    // 获取频道的选项数据
+    async getChannelOptions() {
+      // 原始数据 res = {data: {message:'', data:{channels:[频道数组]}}}
+      // 按照结构去 解构 赋值。
+      // await this.$http.get('channels) 返回值res
+      // this.channelOptions = [{id, name}] 数据格式
+      const res = await this.$http.get("channels");
+      // console.log(res);
+      this.channelOptions = res.data.data.channels;
+    },
+    async getArticles () {
+       // post('地址','请求体数据')
+       // 如果是get请求，如何传递参数对象 get('地址',{params:'get对象参数'})
+       const res = await this.$http.get ('articles', {params: this.filterData})
+       this.articles = res.data.data.results
+      //  console.log(res);
+       
+   }
   }
 };
 </script>

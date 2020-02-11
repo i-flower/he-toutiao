@@ -2,7 +2,7 @@
   <div class="container-welcome"></div>
 </template>
 
-<script type="text/javascript">
+<script>
 export default {
     name: 'app-welcome'
 }

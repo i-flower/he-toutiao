@@ -24,7 +24,8 @@ const router = new VueRouter({
         // 登录
         { path: '/login', component: Login },
         // 首页
-        { path: '/', component: Home ,children:[
+        { path: '/', component: Home,
+          children:[
             // 欢迎页面
             { path: '/', component: Welcome},
             { path:'/article', component: Article}

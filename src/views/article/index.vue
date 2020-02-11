@@ -8,7 +8,7 @@
           <!-- :to="{ path: '/' }" 和 router-link to 属性一致  -->
           <!-- { path: '/' } 使用对象和  to="/"  作用一致 -->
           <el-breadcrumb-item :to="{ path: '/' }">首页</el-breadcrumb-item>
-          <el-breadcrumb-item>活动管理</el-breadcrumb-item>
+          <el-breadcrumb-item>内容管理</el-breadcrumb-item>
         </el-breadcrumb>
       </div>
       <!-- 表单 -->
@@ -35,7 +35,7 @@
         </el-form-item>
         <el-form-item label="日期：">
           <el-date-picker
-            v-model="dataArr"
+            v-model="dateArr"
             type="daterange"
             range-separator="至"
             start-placeholder="开始日期"
@@ -71,7 +71,7 @@ export default {
       ],
       // 日期范围数据 [起始日期,结束日期]
       // 但是选择完成日期范围后，可以根据这个数据给 begin_pubdate end_pubdate 赋值。
-      dataArr: []
+      dateArr: []
     };
   }
 };

@@ -10,10 +10,11 @@
         <!-- text-color="#fff" 菜单容器文本颜色 -->
         <!-- active-text-color="#ffd04b" 菜单容器被激活文本颜色 -->
         <el-menu
-           default-active="$route.path"
+           :default-active="$route.path"
            background-color="#002033"
            text-color="#fff"
            active-text-color="#ffd04b"
+           style="border-right:none"
            :collapse="!isOpen"
            :collapse-transition="false"
            router
@@ -51,21 +52,21 @@
     </el-aside>
     <el-container>
       <!-- 头部导航区域 -->
-      <el-header>
+      <el-header class="my-header">
         <!-- 设置字体图标 -->
         <span @click="toggleMenu()" class="el-icon-s-fold icon"></span>
-        <span>江苏传智播客教育科技有限公司</span>
+        <span class="text">江苏传智播客教育科技有限公司</span>
         <!-- 下拉菜单 -->
-        <el-dropdown @command="handler" class="my-dropdown" :hide-on-click="false">
+        <el-dropdown @command="handleClick" class="my-dropdown" >
           <span class="el-dropdown-link">
-            <img class="user-icon" :src="photo" alt="">
-            <span class="user-name">{{name}}</span>
+            <img class="head" :src="photo" alt="">
+            <strong class="name">{{name}}</strong>
             <i class="el-icon-arrow-down el-icon--right"></i>
           </span>
           <el-dropdown-menu slot="dropdown">
               <!-- icon是添加的字体图标 -->
-            <el-dropdown-item command="setting" icon="el-icon-setting">个人设置</el-dropdown-item>
-            <el-dropdown-item command="logout" icon="el-icon-unlock">退出登录</el-dropdown-item> 
+            <el-dropdown-item command="setting">个人设置</el-dropdown-item>
+            <el-dropdown-item command="logout">退出登录</el-dropdown-item> 
           </el-dropdown-menu>
         </el-dropdown>
       </el-header>
@@ -99,11 +100,16 @@ export default {
       //切换状态 展开 收起   宽度/logo/导航菜单组件
       this.isOpen = !this.isOpen
     },
-    handler (command) {
+    // 处理下拉菜单的点击
+    handleClick (command) {
        if(command === 'setting') {
          this.$router.push('/setting')
        }
        if(command === 'logout') {
+         // 退出登录
+        // 1. 清除本地用户信息
+         auth.delUser()
+        // 2. 跳转到登录页面
          this.$router.push('/login')
        }
     }
@@ -118,7 +124,7 @@ export default {
   top: 0;
   width: 100%;
   height: 100%;
-  .el-aside {
+  .my-aside {
     background-color: #002033;
     .logo {
         width: 100%;
@@ -134,26 +140,25 @@ export default {
         border-right: none;
     }
   }
-  .el-header {
+  .my-header {
     border-bottom: 1px solid #ddd;
     line-height: 60px;
     .icon {
       font-size: 24px;
       vertical-align: middle;
-      margin-right: 10px;
     }
     .text {
       font-size: 16px;
-      vertical-align: middle;
+      padding-left: 10px;
     }
     .my-dropdown {
         float: right;
-        .user-icon {
+        .head {
           width: 30px;
           height: 30px;
           vertical-align: middle;
         }
-        .user-name {
+        .name {
            color: #333;
            font-weight: bold;
            vertical-align: middle;

@@ -2,6 +2,10 @@
 import Vue from 'vue'
 import App from './App.vue'
 
+// 导入axios
+// import axios from 'axios'
+import axios from '@/api'
+
 // 导入路由
 // import router from './router/index.js'
 // 1.如果 router/index.js 可以省略router 默认访问index.js文件
@@ -11,10 +15,6 @@ import router from '@/router'
 // 导入element-ui
 import ElementUI from 'element-ui';
 import 'element-ui/lib/theme-chalk/index.css';
-
-// 导入axios
-// import axios from 'axios'
-import axios from '@/api'
 
 // 使用饿了么ui
 Vue.use(ElementUI);

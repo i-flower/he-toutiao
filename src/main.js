@@ -16,6 +16,14 @@ import router from '@/router'
 import ElementUI from 'element-ui';
 import 'element-ui/lib/theme-chalk/index.css';
 
+// 注册全局面包屑组件
+// import MyBread from '@/components/my-bread'
+// Vue.component('my-bread', MyBread)
+
+// 使用自己注册的面包屑插件
+import Plugin from '@/plugin'
+Vue.use(Plugin)
+
 // 使用饿了么ui
 Vue.use(ElementUI);
 //  使用axios

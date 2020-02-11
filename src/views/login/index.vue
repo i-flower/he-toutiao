@@ -40,7 +40,7 @@ export default {
             }
             
         }
-        return{
+        return { 
             loginForm: {
             mobile: '13911111111',
             code: '246810'

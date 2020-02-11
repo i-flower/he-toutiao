@@ -1,21 +1,80 @@
 <template>
-  <div class="container">
-      article
+  <div class="container-article">
+    <!-- 筛选区域 -->
+    <el-card class="box-card">
+      <!-- 面包屑 -->
+      <div slot="header">
+        <el-breadcrumb separator-class="el-icon-arrow-right">
+          <!-- :to="{ path: '/' }" 和 router-link to 属性一致  -->
+          <!-- { path: '/' } 使用对象和  to="/"  作用一致 -->
+          <el-breadcrumb-item :to="{ path: '/' }">首页</el-breadcrumb-item>
+          <el-breadcrumb-item>活动管理</el-breadcrumb-item>
+        </el-breadcrumb>
+      </div>
+      <!-- 表单 -->
+      <el-form label-width="80px" size="small">
+        <el-form-item label="状态：">
+          <el-radio-group v-model="filterData.status">
+            <el-radio :label="null">全部</el-radio>
+            <el-radio :label="0">草稿</el-radio>
+            <el-radio :label="1">待审核</el-radio>
+            <el-radio :label="2">审核通过</el-radio>
+            <el-radio :label="3">审核失败</el-radio>
+            <el-radio :label="4">已删除</el-radio>
+          </el-radio-group>
+        </el-form-item>
+        <el-form-item label="频道：">
+          <el-select v-model="filterData.channel_id" placeholder="请选择">
+            <el-option
+              v-for="item in channelOptions"
+              :key="item.value"
+              :label="item.label"
+              :value="item.value"
+            ></el-option>
+          </el-select>
+        </el-form-item>
+        <el-form-item label="日期：">
+          <el-date-picker
+            v-model="dataArr"
+            type="daterange"
+            range-separator="至"
+            start-placeholder="开始日期"
+            end-placeholder="结束日期"
+          ></el-date-picker>
+        </el-form-item>
+        <el-form-item>
+           <el-button type="primary">筛选</el-button>
+        </el-form-item>
+      </el-form>
+    </el-card>
+   
   </div>
 </template>
 
 <script type="text/javascript">
 export default {
-    name: 'app-article',
-    created () {
-      this.$http.get('articles').then(res => {
-        console.log(res.data);
-      }).catch(err => {
-        console.log(err);
-        
-      })
-    }
-}
+  // 注意：组件名称不能和原生标签重名
+  name: "app-article",
+  data() {
+    return {
+      filterData: {
+         // 当字段的值null，axios请求不会提交，代表不传
+        status: null,
+        channel_id: null,
+        begin_pubdate: null,
+        end_pubdate: null
+      },
+       // 频道下拉选项数据
+      channelOptions: [
+        { label: "前端", value: "1" },
+        { label: "Java", value: "2" }
+      ],
+      // 日期范围数据 [起始日期,结束日期]
+      // 但是选择完成日期范围后，可以根据这个数据给 begin_pubdate end_pubdate 赋值。
+      dataArr: []
+    };
+  }
+};
 </script>
 
 <style scoped lang="less" >

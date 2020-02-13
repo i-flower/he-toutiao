@@ -18,7 +18,7 @@ import auth from '@/utils/auth'
 // 导入article模块
 import Article from '@/views/article' 
 // 导入图片模块
-import Image from '@/views/image'
+import Image from '@/views/images'
 
 // 初始化router 
 const router = new VueRouter({

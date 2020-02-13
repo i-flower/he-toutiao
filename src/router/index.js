@@ -17,6 +17,8 @@ import NotFount from '@/views/404'
 import auth from '@/utils/auth'
 // 导入article模块
 import Article from '@/views/article' 
+// 导入图片模块
+import Image from '@/views/image'
 
 // 初始化router 
 const router = new VueRouter({
@@ -28,8 +30,8 @@ const router = new VueRouter({
           children:[
             // 欢迎页面
             { path: '/', component: Welcome},
-            { path:'/article', component: Article}
-
+            { path:'/article', component: Article},
+            { path:'/image', component: Image}
         ]},
         
         // 404页面  通配以上规则没有的地址

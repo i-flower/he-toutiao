@@ -75,9 +75,9 @@
         </el-table-column>
         <el-table-column label="发布时间" prop="pubdate"></el-table-column>
         <el-table-column label="操作" width="120px">
-          <template>
-            <el-button type="primary" icon="el-icon-edit" plain circle></el-button>
-            <el-button type="danger" icon="el-icon-delete" plain circle></el-button>
+          <template slot-scope="scope">
+            <el-button @click="toEditArticle(scope.row.id)" type="primary" icon="el-icon-edit" plain circle></el-button>
+            <el-button @click="delArticle(scope.row.id)" type="danger" icon="el-icon-delete" plain circle></el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -163,14 +163,14 @@ export default {
        this.getArticles()
      },
      // 日期选择处理函数
-     changeData (dataArr) {
+     changeData (dateArr) {
         // 默认参数 dateArr [起始日期,结束日期]  日期默认是Date类型
         // 文档：可受 value-format 控制，通过这个数据指定组件产生的日期格式 yyyy-MM-dd
         // console.log(value);  "2020-02-25", "2020-03-25"
         // 当使用组件的 清空功能，也会触发changeDate函数，改变成null === dateArr
-        if (value) {
-          this.filterData.begin_pubdate = dataArr[0]
-          this.filterData.end_pubdate =dataArr[1]
+        if (dateArr) {
+          this.filterData.begin_pubdate = dateArr[0]
+          this.filterData.end_pubdate =dateArr[1]
         } else {
           this.filterData.begin_pubdate = null
           this.filterData.end_pubdate = null
@@ -178,11 +178,34 @@ export default {
      },
      // 频道改变后
      changeChannel () {
-       console.log(this.filterData.channel_id);
+      //  console.log(this.filterData.channel_id);
        
        if (this.filterData.channel_id === '') {
          this.filterData.channel_id = null
        }
+     },
+     // 编辑文章
+     toEditArticle(id) {
+       this.$router.push(`/publish?id=${id}`)
+       
+     },
+     // 删除文章
+     delArticle (id) {
+        // 确认框
+      this.$confirm('亲，您是否要删除该篇文章？','温馨提示',{
+        cinfirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(async () =>{
+        // 删除请求
+        try {
+          await this.$http.delete(`articles/${id}`)
+          this.$message.success('删除成功')
+          this.getArticles()
+        } catch (e) {
+          this.$message.error('删除失败')
+        }
+      }).catch(()=>{})
      }
   }
 };

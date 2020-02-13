@@ -4,6 +4,8 @@ import axios from 'axios'
 import auth from '@/utils/auth'
 // 导入router
 import router from '@/router'
+// 导入json-bigint包
+import JSONBIGINT from 'json-bigint'
 
 // 进行默认配置
 // 请求的时候：基准地址
@@ -46,4 +48,15 @@ axios.interceptors.response.use(res => {
     return Promise.reject(err)
 })
 
+// 转换响应格式
+axios.defaults.transformResponse = [data => {
+   // 进行格式转换 data有可能是json格式   极端错误
+   // return JSONBIGINT.parse(data)  有可能会报错
+   try {
+     return JSONBIGINT.parse(data)
+   } catch(e) {
+     // 转换异常，还是使用原始数据
+     return data
+   }
+}]
 export default axios

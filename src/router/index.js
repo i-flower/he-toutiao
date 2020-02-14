@@ -19,6 +19,8 @@ import auth from '@/utils/auth'
 import Article from '@/views/article' 
 // 导入图片模块
 import Image from '@/views/images'
+// 导入发布文章组件
+import Publish from '@/views/publish'
 
 // 初始化router 
 const router = new VueRouter({
@@ -29,9 +31,13 @@ const router = new VueRouter({
         { path: '/', component: Home,
           children:[
             // 欢迎页面
-            { path: '/', component: Welcome},
+            { path:'/', component: Welcome},
+            // 内容管理
             { path:'/article', component: Article},
-            { path:'/image', component: Image}
+            // 素材管理
+            { path:'/image', component: Image},
+             // 发布与编辑文章
+            { path:'/publish', component: Publish}
         ]},
         
         // 404页面  通配以上规则没有的地址

@@ -12,7 +12,7 @@
           <el-radio-button :label="false">全部</el-radio-button>
           <el-radio-button :label="true">收藏</el-radio-button>
         </el-radio-group>
-        <el-button type="success" style="float:right" size="small">添加素材</el-button>
+        <el-button @click="openDialog()" type="success" style="float:right" size="small">添加素材</el-button>
       </div>
       <!-- 列表 -->
       <div class="img-list">
@@ -41,6 +41,21 @@
         style="text-align:center"
       ></el-pagination>
     </el-card>
+    <!-- 对话框 -->
+    <!-- action="完整上传地址"  组件自己来发送上传请求 -->
+    <!-- :show-file-list="false" 不显示文件列表 -->
+    <!-- :on-success="handleAvatarSuccess" 上传成功回调函数 -->
+    <el-dialog title="添加素材" :visible.sync="dialogVisible" width="300px">
+      <el-upload
+        class="avatar-uploader"
+        action="https://jsonplaceholder.typicode.com/posts/"
+        :show-file-list="false"
+        :on-success="uploadSuccess"
+      >
+        <img v-if="imageUrl" :src="imageUrl" class="avatar" />
+        <i v-else class="el-icon-plus avatar-uploader-icon"></i>
+      </el-upload>
+    </el-dialog>
   </div>
 </template>
 
@@ -49,6 +64,8 @@ export default {
   name: "app-image",
   data() {
     return {
+      // 控制对话框显示 隐藏
+      dialogVisible: false,
       // 查询条件
       reqParams: {
         // false 全部 true 收藏
@@ -59,7 +76,9 @@ export default {
       // 图片列表数据
       images: [],
       // 总条数
-      total: 0
+      total: 0,
+      // 预览图
+      imageUrl: null
     };
   },
   created() {
@@ -110,15 +129,25 @@ export default {
         confirmButtonText: "确定",
         cancekButtonText: "取消",
         type: "warning"
-      }).then(async () => {
-         try {
-            await this.$http.delete(`/user/images/${id}`)
-            this.$message.success('删除成功')
-            this.getImages()
-         } catch (e) {
-           this.$message.error('删除成功')
-         }
-      }).catch( () => {})
+      })
+        .then(async () => {
+          try {
+            await this.$http.delete(`/user/images/${id}`);
+            this.$message.success("删除成功");
+            this.getImages();
+          } catch (e) {
+            this.$message.error("删除成功");
+          }
+        })
+        .catch(() => {});
+    },
+    //打开对话框
+    openDialog() {
+      this.dialogVisible = true;
+    },
+    // 上传成功回调函数
+    uploadSuccess () {
+
     }
   }
 };

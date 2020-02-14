@@ -24,6 +24,9 @@ import 'element-ui/lib/theme-chalk/index.css';
 import Plugin from '@/plugin'
 Vue.use(Plugin)
 
+// 导入自己的样式
+import '@/styles/index.less'
+
 // 使用饿了么ui
 Vue.use(ElementUI);
 //  使用axios

@@ -48,9 +48,11 @@
     <el-dialog title="添加素材" :visible.sync="dialogVisible" width="300px">
       <el-upload
         class="avatar-uploader"
-        action="https://jsonplaceholder.typicode.com/posts/"
+        action="http://ttapi.research.itcast.cn/mp/v1_0/user/images"
         :show-file-list="false"
         :on-success="uploadSuccess"
+        :headers="uploadHeaders"
+        name="image"
       >
         <img v-if="imageUrl" :src="imageUrl" class="avatar" />
         <i v-else class="el-icon-plus avatar-uploader-icon"></i>
@@ -60,6 +62,7 @@
 </template>
 
 <script type="text/javascript">
+import auth from '@/utils/auth'
 export default {
   name: "app-image",
   data() {
@@ -78,7 +81,10 @@ export default {
       // 总条数
       total: 0,
       // 预览图
-      imageUrl: null
+      imageUrl: null,
+      uploadHeaders: {
+        Authorization: `Bearer ${auth.getUser().token}`
+      }
     };
   },
   created() {
@@ -144,10 +150,23 @@ export default {
     //打开对话框
     openDialog() {
       this.dialogVisible = true;
+      this.imageUrl = null;
     },
     // 上传成功回调函数
-    uploadSuccess () {
-
+    uploadSuccess (res) {
+        // console.log(res) === {data:{url:'图片地址'}}
+       // 预览图片
+       this.imageUrl = res.data.url
+       // 成功的提示
+       this.$message.success('上传成功')
+       // 2s 关闭对话框 更新列表
+       // 使用匿名函数this指向window，箭头函数可以使this指向继承外部的this指向，保持一致
+       window.setTimeout(() => {
+           // 关闭对话框
+           this.dialogVisible = false
+           // 更新列表
+           this.getImages()
+       },2000)
     }
   }
 };

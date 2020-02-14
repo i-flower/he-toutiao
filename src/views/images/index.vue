@@ -8,7 +8,7 @@
       <div class="btn-box">
         <!-- collect 值为true时收藏图片 为false时全部图片 -->
         <!-- :label 指定值才是布尔类型 -->
-        <el-radio-group v-model="reqParams.collect" size="small">
+        <el-radio-group @change="changeCollect" v-model="reqParams.collect" size="small">
           <el-radio-button :label="false">全部</el-radio-button>
           <el-radio-button :label="true">收藏</el-radio-button>
         </el-radio-group>
@@ -16,10 +16,12 @@
       </div>
       <!-- 列表 -->
       <div class="img-list">
-        <div class="img-item" v-for="i in 10" :key="i">
-          <img src="../../assets/avatar.jpg" alt />
-          <div class="option">
-            <span class="el-icon-star-off"></span>
+        <!-- 获取到的数据在模版中遍历 -->
+        <div class="img-item" v-for="item in images" :key="item.id">
+          <img src="item.url" alt />
+          <!-- 收藏列表的时候不需要底部的操作按钮 设置隐藏-->
+          <div class="option" v-if="!reqParams.changeCollect">
+            <span class="el-icon-star-off" :class="{red:item.is_collected}"></span>
             <span class="el-icon-delete"></span>
           </div>
         </div>
@@ -28,7 +30,10 @@
       <el-pagination 
       background 
       layout="prev, pager, next" 
-      :total="1000"
+      :total="total"
+      :current-page="reqParams.page"
+      :page-size="reqParams.per_page"
+      @current-change="changePager"
       style="text-align:center"
       ></el-pagination>
     </el-card>
@@ -42,11 +47,40 @@ export default {
     return {
       // 查询条件
       reqParams: {
+        // false 全部 true 收藏
         collect: false,
         page: 1,
         per_page: 10
-      }
-    };
+      },
+      // 图片列表数据
+      images: [],
+      // 总条数
+      total: 0
+    }
+  },
+  created () {
+    // 组件初始化的时候获取数据
+     this.getImages()
+  },
+  methods : {
+     async getImages() {
+       // 获取数据
+       const res = await this.$http.get('user/images',{params:this.reqParams})
+       console.log(res);
+       // 给列表数据赋值
+       this.images =res.data.data.results
+       this.total = res.data.data.total_count
+     },
+     // 处理页码改变
+     changePager(newPage) {
+         this.reqParams.page = newPage
+         this.getImages()
+     },
+     // 切换 全部与收藏
+     changeCollect () {
+       this.reqParams.page = 1
+       this.getImages()
+     }
   }
 };
 </script>

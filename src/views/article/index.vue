@@ -19,18 +19,8 @@
           </el-radio-group>
         </el-form-item>
         <el-form-item label="频道：">
-          <el-select v-model="filterData.channel_id"
-          @change="changeChannel"
-          clearable
-          placeholder="请选择">
-            <el-option
-              v-for="item in channelOptions"
-              :key="item.id"
-              :label="item.name"
-              :value="item.id"
-            ></el-option>
-            <!-- label 选项文字  value 选项的值 当你选择某个选项后，该选项的值提供v-model -->
-          </el-select>
+           <!-- 频道组件 -->
+           <my-channel v-model="filterData.channel_id"></my-channel>
         </el-form-item>
         <el-form-item label="日期：">
           <el-date-picker
@@ -39,7 +29,7 @@
             range-separator="至"
             start-placeholder="开始日期"
             end-placeholder="结束日期"
-            @change="changeData"
+            @change="changeDate"
             value-format="yyyy-MM-dd"
           ></el-date-picker>
         </el-form-item>
@@ -124,23 +114,23 @@ export default {
       // 日期范围数据 [起始日期,结束日期]
       // 但是选择完成日期范围后，可以根据这个数据给 begin_pubdate end_pubdate 赋值。
       dateArr: []
-    };
+    }
   },
   created() {
-    this.getChannelOptions(), 
+    // this.getChannelOptions(), 
     this.getArticles()
   },
   methods: {
     // 获取频道的选项数据
-    async getChannelOptions() {
-      // 原始数据 res = {data: {message:'', data:{channels:[频道数组]}}}
-      // 按照结构去 解构 赋值。
-      // await this.$http.get('channels) 返回值res
-      // this.channelOptions = [{id, name}] 数据格式
-      const res = await this.$http.get("channels");
-      // console.log(res);
-      this.channelOptions = res.data.data.channels;
-    },
+    // async getChannelOptions() {
+    //   // 原始数据 res = {data: {message:'', data:{channels:[频道数组]}}}
+    //   // 按照结构去 解构 赋值。
+    //   // await this.$http.get('channels) 返回值res
+    //   // this.channelOptions = [{id, name}] 数据格式
+    //   const res = await this.$http.get("channels");
+    //   // console.log(res);
+    //   this.channelOptions = res.data.data.channels;
+    // },
     async getArticles() {
       // post('地址','请求体数据')
       // 如果是get请求，如何传递参数对象 get('地址',{params:'get对象参数'})
@@ -163,27 +153,27 @@ export default {
        this.getArticles()
      },
      // 日期选择处理函数
-     changeData (dateArr) {
+     changeDate (dateArr) {
         // 默认参数 dateArr [起始日期,结束日期]  日期默认是Date类型
         // 文档：可受 value-format 控制，通过这个数据指定组件产生的日期格式 yyyy-MM-dd
         // console.log(value);  "2020-02-25", "2020-03-25"
         // 当使用组件的 清空功能，也会触发changeDate函数，改变成null === dateArr
         if (dateArr) {
           this.filterData.begin_pubdate = dateArr[0]
-          this.filterData.end_pubdate =dateArr[1]
+          this.filterData.end_pubdate = dateArr[1]
         } else {
           this.filterData.begin_pubdate = null
           this.filterData.end_pubdate = null
         }
      },
      // 频道改变后
-     changeChannel () {
-      //  console.log(this.filterData.channel_id);
+    //  changeChannel () {
+    //   //  console.log(this.filterData.channel_id);
        
-       if (this.filterData.channel_id === '') {
-         this.filterData.channel_id = null
-       }
-     },
+    //    if (this.filterData.channel_id === '') {
+    //      this.filterData.channel_id = null
+    //    }
+    //  },
      // 编辑文章
      toEditArticle(id) {
        this.$router.push(`/publish?id=${id}`)

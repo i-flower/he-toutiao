@@ -21,20 +21,24 @@
           <img src="item.url" alt />
           <!-- 收藏列表的时候不需要底部的操作按钮 设置隐藏-->
           <div class="option" v-if="!reqParams.changeCollect">
-            <span class="el-icon-star-off" :class="{red:item.is_collected}"></span>
+            <span
+              @click="toggleStatus(item)"
+              class="el-icon-star-off"
+              :class="{red:item.is_collected}"
+            ></span>
             <span class="el-icon-delete"></span>
           </div>
         </div>
       </div>
       <!-- 分页 -->
-      <el-pagination 
-      background 
-      layout="prev, pager, next" 
-      :total="total"
-      :current-page="reqParams.page"
-      :page-size="reqParams.per_page"
-      @current-change="changePager"
-      style="text-align:center"
+      <el-pagination
+        background
+        layout="prev, pager, next"
+        :total="total"
+        :current-page="reqParams.page"
+        :page-size="reqParams.per_page"
+        @current-change="changePager"
+        style="text-align:center"
       ></el-pagination>
     </el-card>
   </div>
@@ -56,69 +60,87 @@ export default {
       images: [],
       // 总条数
       total: 0
-    }
+    };
   },
-  created () {
+  created() {
     // 组件初始化的时候获取数据
-     this.getImages()
+    this.getImages();
   },
-  methods : {
-     async getImages() {
-       // 获取数据
-       const res = await this.$http.get('user/images',{params:this.reqParams})
-       console.log(res);
-       // 给列表数据赋值
-       this.images =res.data.data.results
-       this.total = res.data.data.total_count
-     },
-     // 处理页码改变
-     changePager(newPage) {
-         this.reqParams.page = newPage
-         this.getImages()
-     },
-     // 切换 全部与收藏
-     changeCollect () {
-       this.reqParams.page = 1
-       this.getImages()
-     }
+  methods: {
+    async getImages() {
+      // 获取数据
+      const res = await this.$http.get("user/images", {
+        params: this.reqParams
+      });
+      // console.log(res);
+      // 给列表数据赋值
+      this.images = res.data.data.results;
+      this.total = res.data.data.total_count;
+    },
+    // 处理页码改变
+    changePager(newPage) {
+      this.reqParams.page = newPage;
+      this.getImages();
+    },
+    // 切换 全部与收藏
+    changeCollect() {
+      this.reqParams.page = 1;
+      this.getImages();
+    },
+    // 切换收藏与取消
+    async toggleStatus(item) {
+      try {
+        const res = await this.$http.put(`/user/images/${item.id}`, {
+          collect: !item.is_collected
+        });
+        // res.data.data.collect 就是当前素材状态
+        this.$message.success(
+          res.data.data.collect ? "添加收藏成功" : "取消收藏成功"
+        );
+        // item 就是素材数据  is_collected 显示收藏图标的 颜色
+        item.is_collected = res.data.data.collect;
+      } catch (e) {
+        this.$message.error("操作失败");
+      }
+    }
   }
 };
 </script>
 
 <style scoped lang="less" >
-    .img-list {
-        margin-bottom: 30px;
-        .img-item {
-            width: 180px;
-            height: 180px;
-            border: 1px dashed #ddd;
-            position: relative;
-            margin-top: 20px;
-            display: inline-block;
-            margin-right: 30px;
-            img {
-                width: 100%;
-                height: 100%;
-                display: block;
-            }
-            .option {
-                width: 100%;
-                height: 30px;
-                line-height: 30px;
-                background: rgba(0, 0, 0, 0.3);
-                position: absolute;
-                left: 0;
-                bottom: 0;
-                text-align: center;
-                span {
-                    color: #fff;
-                    margin: 0 30px;
-                }
-                .red {
-                    color: red;
-                }
-            }
-        }
+.img-list {
+  margin-bottom: 30px;
+  .img-item {
+    width: 180px;
+    height: 180px;
+    border: 1px dashed #ddd;
+    position: relative;
+    margin-top: 20px;
+    display: inline-block;
+    margin-right: 30px;
+    img {
+      width: 100%;
+      height: 100%;
+      display: block;
     }
+    .option {
+      width: 100%;
+      height: 30px;
+      line-height: 30px;
+      background: rgba(0, 0, 0, 0.3);
+      position: absolute;
+      left: 0;
+      bottom: 0;
+      text-align: center;
+      span {
+        color: #fff;
+        margin: 0 30px;
+      }
+      .red {
+        color: red;
+      }
+    }
+  }
+}
 </style>
  

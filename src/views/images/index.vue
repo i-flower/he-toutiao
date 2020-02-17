@@ -8,17 +8,17 @@
       <div class="btn-box">
         <!-- collect 值为true时收藏图片 为false时全部图片 -->
         <!-- :label 指定值才是布尔类型 -->
-        <el-radio-group @change="changeCollect" v-model="reqParams.collect" size="small">
+        <el-radio-group @change="changeCollect()" v-model="reqParams.collect" size="small">
           <el-radio-button :label="false">全部</el-radio-button>
           <el-radio-button :label="true">收藏</el-radio-button>
         </el-radio-group>
-        <el-button @click="openDialog()" type="success" style="float:right" size="small">添加素材</el-button>
+         <el-button @click="openDialog()" type="success" style="float:right" size="small">添加素材</el-button>
       </div>
       <!-- 列表 -->
       <div class="img-list">
         <!-- 获取到的数据在模版中遍历 -->
         <div class="img-item" v-for="item in images" :key="item.id">
-          <img src="item.url" alt />
+          <img :src="item.url" alt />
           <!-- 收藏列表的时候不需要底部的操作按钮 设置隐藏-->
           <div class="option" v-if="!reqParams.changeCollect">
             <span

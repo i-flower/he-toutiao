@@ -21,6 +21,8 @@ import Article from '@/views/article'
 import Image from '@/views/images'
 // 导入发布文章组件
 import Publish from '@/views/publish'
+// 导入评论管理组件
+import Comment from '@/views/comment'
 
 // 初始化router 
 const router = new VueRouter({
@@ -37,7 +39,9 @@ const router = new VueRouter({
             // 素材管理
             { path:'/image', component: Image},
              // 发布与编辑文章
-            { path:'/publish', component: Publish}
+            { path:'/publish', component: Publish},
+            // 评论管理
+            { path:'/comment', component: Comment}
         ]},
         
         // 404页面  通配以上规则没有的地址

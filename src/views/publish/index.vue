@@ -3,7 +3,7 @@
     <el-card>
       <div slot="header">
         <!-- 面包屑 -->
-        <my-bread>发布文章</my-bread>
+        <my-bread>{{$route.query.id?'修改':'发布'}}文章</my-bread>
       </div>
       <!-- 表单 -->
       <el-form label-width="120px">
@@ -32,7 +32,10 @@
         <el-form-item label="频道：">
           <my-channel v-model="articleForm.channel_id"></my-channel>
         </el-form-item>
-        <el-form-item>
+        <el-form-item v-if="$route.query.id">
+             <el-button @click="update()" type="success">修改文章</el-button>
+        </el-form-item>
+        <el-form-item v-else>
           <el-button @click="submit(false)" type="primary">发布文章</el-button>
           <el-button @click="submit(true)">存入草稿箱</el-button>
         </el-form-item>
@@ -87,6 +90,12 @@ export default {
       }
     };
   },
+  created () {
+    // 当时修改文章的时候，获取文章信息填充表单
+    if (this.$route.query.id) {
+      this.getArticle()
+    }
+  },
   methods: {
     // 添加文章 draft===false 发布文章 draft===true 存入文章
     async submit (draft) {
@@ -100,6 +109,52 @@ export default {
       } catch (e){
         this.$message.error('操作失败')
       }
+    },
+    async getArticle() {
+      const res = await this.$http.get(`articles/${this.$route.query.id}`)
+      this.articleForm = res.data.data
+    },
+    // 切换表单内容
+    toggleFormInfo () {
+      if(this.$route.query.id) {
+        // 修改
+        this.getArticle()
+      } else {
+        // 发布需要清空表单的内容
+        // 不能这样写：this.articleForm ={}, 但是模板中的articleForm.cover.type会报错
+        // 包装模板依赖的字段都是对应的数据，保证模板编译不错误
+        this.articleForm = {
+        title: null,
+        channel_id: null,
+        content: null,
+        cover: {
+          // 封面类型 -1:自动，0-无图，1-1张，3-3张
+          type: 1,
+          // 放图片地址
+          images: []
+        }
+      }
+      }
+    },
+    // 修改函数
+    async update () {
+      try {
+        // 修改只有发布  没有草稿
+        // 路径传参 需要ID
+        // 键值对传参 需要 draft
+        // 请求体传参  articleForm
+        await this.$http.put(`articles/${this.articleForm.id}?draft=false`,this.articleForm)
+        this.$message.success('修改成功')
+        this.$router.push('/article')
+      } catch (e) {
+         this.$message.error('修改失败')
+      }
+    }
+  },
+  watch: {
+    // 监听地址栏ID的变化
+    '$route.query.id': function() {
+      this.toggleFormInfo()
     }
   }
 };

@@ -25,6 +25,8 @@ import Publish from '@/views/publish'
 import Comment from '@/views/comment'
 // 导入粉丝管理组件
 import Fans from '@/views/fans'
+// 导入个人设置组件
+import Setting from '@/views/setting'
 
 // 初始化router 
 const router = new VueRouter({
@@ -44,8 +46,10 @@ const router = new VueRouter({
             { path:'/publish', component: Publish},
             // 评论管理
             { path:'/comment', component: Comment},
-            //粉丝管理
-            { path:'/fans', component: Fans}
+            // 粉丝管理
+            { path:'/fans', component: Fans},
+            // 个人设置
+            { path:'/setting', component: Setting}
         ]},
         
         // 404页面  通配以上规则没有的地址

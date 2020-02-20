@@ -40,7 +40,7 @@ export default {
   name: "app-fans",
   data() {
     return {
-      activeName: "list",
+      activeName: "pictrue",
       // 粉丝列表
       fansList: [],
       // 总条数
@@ -49,8 +49,7 @@ export default {
       reqParams: {
         page: 1,
         per_page: 24
-      },
-      activeName: "pictrue"
+      }
     };
   },
   created() {
@@ -109,7 +108,7 @@ export default {
           data: [10, 52, 200, 334, 390, 330, 220]
         }
       ]
-    };
+    }
     myChart.setOption(option);
   }
 };

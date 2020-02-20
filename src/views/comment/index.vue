@@ -97,6 +97,7 @@ export default {
                  allow_comment: !row.comment_status
               })
             //   console.log(res)
+            
               // 提示
               this.$message.success(res.data.data.allow_comment? '打开成功': '关闭成功')
               // 修改当前行文章的评论状态

@@ -19,7 +19,7 @@
           </el-radio-group>
         </el-form-item>
         <el-form-item label="频道：">
-           <!-- 频道组件 -->
+           <!-- 使用自己的频道组件 -->
            <my-channel v-model="filterData.channel_id"></my-channel>
         </el-form-item>
         <el-form-item label="日期：">
@@ -135,6 +135,7 @@ export default {
       // post('地址','请求体数据')
       // 如果是get请求，如何传递参数对象 get('地址',{params:'get对象参数'})
       const res = await this.$http.get("articles", { params: this.filterData });
+
       this.articles = res.data.data.results;
       //  console.log(res);
       // 设置总条数
